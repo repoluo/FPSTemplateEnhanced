@@ -1,0 +1,8 @@
+Binaries
+Intermediate
+DerivedDataCache
+Saved
+.vs
+.idea
+.vsconfig
+*.user
