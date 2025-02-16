@@ -7,6 +7,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/TextBlock.h"
+
 #include "UObject/ConstructorHelpers.h"
 
 AFPSTemplateEnhancedGameMode::AFPSTemplateEnhancedGameMode()
@@ -17,6 +18,8 @@ AFPSTemplateEnhancedGameMode::AFPSTemplateEnhancedGameMode()
 	DefaultPawnClass = PlayerPawnClassFinder.Class;
 
 	GameOverWidget = nullptr;
+	LevelWidget = nullptr;
+	
 }
 
 void AFPSTemplateEnhancedGameMode::StartPlay()
@@ -47,6 +50,24 @@ void AFPSTemplateEnhancedGameMode::StartGame()
 			Target->SetCubeColorLight(FVector(1.0f, 0.0f, 0.0f));
 		}
 		FoundActors.RemoveAt(Index);
+	}
+
+	if (UClass* LevelWidgetClass = LoadClass<UUserWidget>(nullptr, TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/FirstPerson/Blueprints/WBP_LevelHint.WBP_LevelHint_C'")))
+	{
+		if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
+		{
+			LevelWidget = CreateWidget<UUserWidget>(PlayerController, LevelWidgetClass);
+			if (LevelWidget)
+			{
+				LevelWidget->AddToViewport();
+				UTextBlock* ScoreText = Cast<UTextBlock>(LevelWidget->GetWidgetFromName(TEXT("LevelName")));
+				if (ScoreText)
+				{
+					ScoreText->SetText(FText::FromString(FString::Printf(TEXT("Level 1"))));
+				}
+			}
+		}
+		
 	}
 
 	// Start game timer
@@ -82,19 +103,16 @@ void AFPSTemplateEnhancedGameMode::EndGame()
 					ScoreText->SetText(FText::FromString(FString::Printf(TEXT("Total Score: %d"), TotalScore)));
 				}
 			}
+			// 禁用玩家控制器的输入
+			PlayerController->SetIgnoreMoveInput(true);
+			PlayerController->SetIgnoreLookInput(true);
+
+			// 显示鼠标光标
+			PlayerController->bShowMouseCursor = true;
+			PlayerController->SetInputMode(FInputModeUIOnly());
 		}
-		
 	}
 	
-	// if (GameOverWidget)
-	// {
-	// 	GameOverWidget->AddToViewport();
-	// 	UTextBlock* ScoreText = Cast<UTextBlock>(GameOverWidget->GetWidgetFromName(TEXT("ScoreText")));
-	// 	if (ScoreText)
-	// 	{
-	// 		ScoreText->SetText(FText::FromString(FString::Printf(TEXT("Total Score: %d"), TotalScore)));
-	// 	}
-	// }
 	
 
 	TArray<AActor*> FoundActors;
@@ -104,9 +122,12 @@ void AFPSTemplateEnhancedGameMode::EndGame()
 		Actor->Destroy();
 	}
 
+	// UGameplayStatics::OpenLevel(GetWorld(), FName("/Script/Engine.World'/Game/FirstPerson/Maps/FirstPersonMap2.FirstPersonMap2'"));
+
 }
 
 void AFPSTemplateEnhancedGameMode::AddScore(int32 Score)
 {
 	TotalScore += Score;
 }
+

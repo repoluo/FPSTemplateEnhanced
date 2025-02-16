@@ -6,6 +6,7 @@
 #include "Components/PointLightComponent.h"
 #include "FPSTemplateEnhancedProjectile.h"
 #include "FPSTemplateEnhancedGameMode.h"
+#include "FPSTemplateEnhancedGameMode2.h"
 
 // Sets default values
 ACubeActor::ACubeActor()
@@ -51,13 +52,29 @@ void ACubeActor::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimit
 		else if (HitCount == 2)
 		{
 			// score operation
-         	AFPSTemplateEnhancedGameMode* GameMode = Cast<AFPSTemplateEnhancedGameMode>(GetWorld()->GetAuthGameMode());
-         	if (GameMode)
-         	{
-         		int32 Score =  Points;
-         		GameMode->AddScore(Score);
-         		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, FString::Printf(TEXT("TotalScore += %d"), Score));
-         	}
+			FString CurrentLevelName = GetWorld()->GetMapName();
+
+			if (CurrentLevelName.Equals(L"UEDPIE_0_FirstPersonMap"))
+			{
+				AFPSTemplateEnhancedGameMode* GameMode = Cast<AFPSTemplateEnhancedGameMode>(GetWorld()->GetAuthGameMode());
+				if (GameMode)
+				{
+					int32 Score =  Points;
+					GameMode->AddScore(Score);
+					GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, FString::Printf(TEXT("TotalScore += %d"), Score));
+				}
+			}
+			else if (CurrentLevelName.Equals(L"UEDPIE_0_FirstPersonMap2"))
+			{
+				AFPSTemplateEnhancedGameMode2* GameMode = Cast<AFPSTemplateEnhancedGameMode2>(GetWorld()->GetAuthGameMode());
+				if (GameMode)
+				{
+					int32 Score =  Points;
+					GameMode->AddScore(Score);
+					GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, FString::Printf(TEXT("TotalScore += %d"), Score));
+				}
+			}
+			
 			Destroy(); // 销毁方块
 		}
 		// OtherActor->Destroy(); // 销毁子弹

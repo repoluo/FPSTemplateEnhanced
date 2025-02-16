@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/ProgressBar.h"
+
 #include "GameOverUserWidget.generated.h"
 
 /**
@@ -13,5 +15,15 @@ UCLASS()
 class FPSTEMPLATEENHANCED_API UGameOverUserWidget : public UUserWidget
 {
 	GENERATED_BODY()
-	
+
+protected:
+	virtual void NativeConstruct() override;
+
+public:
+	UFUNCTION()
+	void ButtonClick();
+
+	UFUNCTION()
+	void LoadNextLevel();
+
 };

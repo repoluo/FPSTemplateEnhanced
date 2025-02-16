@@ -32,10 +32,11 @@ private:
 
 	int32 TotalScore = 0;
 	
-
 	UUserWidget* GameOverWidget;
+	UUserWidget* LevelWidget;
 
 public:
+	UFUNCTION()
 	void AddScore(int32 Score);
 	
 };
