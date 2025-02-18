@@ -25,8 +25,8 @@ AFPSTemplateEnhancedProjectile::AFPSTemplateEnhancedProjectile()
 	// Use a ProjectileMovementComponent to govern this projectile's movement
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileComp"));
 	ProjectileMovement->UpdatedComponent = CollisionComp;
-	ProjectileMovement->InitialSpeed = 60000.f;
-	ProjectileMovement->MaxSpeed = 60000.f;
+	ProjectileMovement->InitialSpeed = 6000.f;
+	ProjectileMovement->MaxSpeed = 6000.f;
 	ProjectileMovement->bRotationFollowsVelocity = true;
 	ProjectileMovement->bShouldBounce = true;
 	ProjectileMovement->ProjectileGravityScale = 0.0f; // Disable gravity
@@ -40,7 +40,7 @@ void AFPSTemplateEnhancedProjectile::OnHit(UPrimitiveComponent* HitComp, AActor*
 	// Only add impulse and destroy projectile if we hit a physics
 	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr) && OtherComp->IsSimulatingPhysics())
 	{
-		OtherComp->AddImpulseAtLocation(GetVelocity() * 2.0f, GetActorLocation());
+		OtherComp->AddImpulseAtLocation(GetVelocity() * 10.0f, GetActorLocation());
 
 		Destroy();
 	}

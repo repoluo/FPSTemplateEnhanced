@@ -36,7 +36,7 @@ void UGameOverUserWidget::LoadNextLevel()
 		// 设置玩家角色的位置
 		if (APawn* PlayerPawn = PlayerController->GetPawn())
 		{
-			FVector NewLocation = FVector(0.0f, 0.0f, 300.0f); // 根据你的关卡设置合适的位置
+			FVector NewLocation = FVector(-30.f, 0.f, -150.f); // 设置玩家角色的位置
 			PlayerPawn->SetActorLocation(NewLocation);
 		}
 	}

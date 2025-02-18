@@ -19,7 +19,8 @@ AFPSTemplateEnhancedGameMode::AFPSTemplateEnhancedGameMode()
 
 	GameOverWidget = nullptr;
 	LevelWidget = nullptr;
-	
+	StartWidget = nullptr;
+	DynamicHintWidget = nullptr;
 }
 
 void AFPSTemplateEnhancedGameMode::StartPlay()
@@ -52,6 +53,26 @@ void AFPSTemplateEnhancedGameMode::StartGame()
 		FoundActors.RemoveAt(Index);
 	}
 
+	if (UClass* StartWidgetClass = LoadClass<UUserWidget>(nullptr, TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/FirstPerson/Blueprints/WBP_StartWidget.WBP_StartWidget_C'")))
+	{
+		if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
+		{
+			StartWidget = CreateWidget<UStartUserWidget>(PlayerController, StartWidgetClass);
+			if (StartWidget)
+			{
+				StartWidget->AddToViewport();
+				// 禁用玩家控制器的输入
+				PlayerController->SetIgnoreMoveInput(true);
+				PlayerController->SetIgnoreLookInput(true);
+
+				// 显示鼠标光标
+				PlayerController->bShowMouseCursor = true;
+				PlayerController->SetInputMode(FInputModeUIOnly());
+				StartWidget->OnLoginSuccess.AddDynamic(this, &AFPSTemplateEnhancedGameMode::OnLoginSuccess);;
+			}
+		}
+	}
+
 	if (UClass* LevelWidgetClass = LoadClass<UUserWidget>(nullptr, TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/FirstPerson/Blueprints/WBP_LevelHint.WBP_LevelHint_C'")))
 	{
 		if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
@@ -71,7 +92,7 @@ void AFPSTemplateEnhancedGameMode::StartGame()
 	}
 
 	// Start game timer
-	GetWorldTimerManager().SetTimer(TimerHandle_GameTimer, this, &AFPSTemplateEnhancedGameMode::EndGame, GameDuration, false);
+	// GetWorldTimerManager().SetTimer(TimerHandle_GameTimer, this, &AFPSTemplateEnhancedGameMode::EndGame, GameDuration, false);
 }
 
 void AFPSTemplateEnhancedGameMode::EndGame()
@@ -131,3 +152,42 @@ void AFPSTemplateEnhancedGameMode::AddScore(int32 Score)
 	TotalScore += Score;
 }
 
+void AFPSTemplateEnhancedGameMode::OnLoginSuccess()
+{
+	if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
+	{
+		PlayerController->bShowMouseCursor = false;
+		PlayerController->SetInputMode(FInputModeGameOnly());
+		PlayerController->SetIgnoreMoveInput(false);
+		PlayerController->SetIgnoreLookInput(false);
+	}
+	
+	if (UClass* WidgetClass = LoadClass<UUserWidget>(nullptr, TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/FirstPerson/Blueprints/WBP_DynamicHint.WBP_DynamicHint_C'")))
+	{
+		if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
+		{
+			DynamicHintWidget = CreateWidget<UUserWidget>(PlayerController, WidgetClass);
+			UTextBlock* DynamicHintText = Cast<UTextBlock>(DynamicHintWidget->GetWidgetFromName(TEXT("TextBlock_DynamicHintText")));
+			if (DynamicHintWidget)
+			{
+				DynamicHintWidget->AddToViewport();
+				if (DynamicHintText)
+				{
+					DynamicHintText->SetText(FText::FromString(FString::Printf(TEXT("Sign in successfully!"))));
+				}
+				// 设置计时器在3秒后隐藏Widget
+				GetWorldTimerManager().SetTimer(TimerHandle_DynamicHintTimer, this, &AFPSTemplateEnhancedGameMode::HideDynamicHintWidget, 3.0f, false);
+			}
+		}
+	}
+	// 登录成功后启动计时器
+	GetWorldTimerManager().SetTimer(TimerHandle_GameTimer, this, &AFPSTemplateEnhancedGameMode::EndGame, GameDuration, false);
+}
+
+void AFPSTemplateEnhancedGameMode::HideDynamicHintWidget()
+{
+	if (DynamicHintWidget)
+	{
+		DynamicHintWidget->RemoveFromParent();
+	}
+}

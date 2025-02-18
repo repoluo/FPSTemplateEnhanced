@@ -78,9 +78,9 @@ float AEnemyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Damage
 		FVector KnockBackDirection = GetActorLocation() - DamageCauser->GetActorLocation();
 		KnockBackDirection.Z = 0; // 保持水平击退
 		KnockBackDirection.Normalize();
-		KnockBack(KnockBackDirection, 3000.0f); // 调整击退强度
+		KnockBack(KnockBackDirection, 300.0f); // 调整击退强度
 	}
-	if (HitCount == 3)
+	if (HitCount == 10)
 	{
 		AFPSTemplateEnhancedGameMode2* GameMode = Cast<AFPSTemplateEnhancedGameMode2>(GetWorld()->GetAuthGameMode());
 		if (GameMode)
