@@ -28,7 +28,7 @@ private:
 	int32 NumberOfImportantTargets = 2;
 
 	UPROPERTY(EditAnywhere, Category="Gameplay")
-	float GameDuration = 30.0f;
+	float GameDuration = 60.0f;
 
 	FTimerHandle TimerHandle_GameTimer;
 

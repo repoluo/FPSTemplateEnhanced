@@ -6,6 +6,7 @@
 #include "EnemyAIController.h"
 #include "FPSTemplateEnhancedProjectile.h"
 #include "FPSTemplateEnhancedGameMode2.h"
+#include "NavigationSystem.h"
 
 // Sets default values
 AEnemyCharacter::AEnemyCharacter()
@@ -25,7 +26,7 @@ AEnemyCharacter::AEnemyCharacter()
 
 	// Create a pawn sensing component
 	PawnSensingComponent = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensingComponent"));
-	PawnSensingComponent->SetPeripheralVisionAngle(120.0f);
+	PawnSensingComponent->SetPeripheralVisionAngle(60.0f);
 
 	AIControllerClass = AEnemyAIController::StaticClass();
 
@@ -41,12 +42,22 @@ void AEnemyCharacter::BeginPlay()
 	{
 		PawnSensingComponent->OnSeePawn.AddDynamic(this, &AEnemyCharacter::OnSeePlayer);
 	}
+
 }
 
 // Called every frame
 void AEnemyCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (!bPlayerSeen)
+	{
+		AEnemyAIController* AIController = Cast<AEnemyAIController>(GetController());
+		if (AIController)
+		{
+			AIController->Patrol(DeltaTime);
+		}
+	}
 
 }
 
@@ -60,6 +71,7 @@ void AEnemyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 void AEnemyCharacter::OnSeePlayer(APawn* Pawn)
 {
 	// If the player is seen, print a message
+	bPlayerSeen = true;
 	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, FString::Printf(TEXT("Player %s is seen!"), *Pawn->GetName()));
 	AEnemyAIController* AIController = Cast<AEnemyAIController>(GetController());
 	if (AIController)
@@ -98,4 +110,25 @@ float AEnemyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Damage
 void AEnemyCharacter::KnockBack(const FVector& KnockBackDirection, float KnockBackStrength)
 {
 	LaunchCharacter(KnockBackDirection * KnockBackStrength, true, true);
+}
+
+
+
+void AEnemyCharacter::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
+{
+	Super::NotifyHit(MyComp, Other, OtherComp, bSelfMoved, HitLocation, HitNormal, NormalImpulse, Hit);
+
+	// 计算反方向
+	FVector BounceDirection = -HitNormal;
+	BounceDirection.Z = 0; // 保持水平反弹
+	BounceDirection.Normalize();
+
+	// 设置新的巡逻点为反方向的一个点
+	FVector NewPatrolPoint = GetActorLocation() + BounceDirection * 500.0f; // 调整反弹距离
+	// 获取AI控制器并设置巡逻点
+	AEnemyAIController* AIController = Cast<AEnemyAIController>(GetController());
+	if (AIController)
+	{
+		AIController->SetSetPatrolPointFromExternal(NewPatrolPoint);
+	}
 }

@@ -20,4 +20,18 @@ class FPSTEMPLATEENHANCED_API AEnemyAIController : public AAIController
 public:
 	virtual void BeginPlay() override;
 	void ChasePlayer(APawn* PlayerPawn);
+	void SetRandomPatrolPoint();
+	void Patrol(float DeltaTime);
+	void SetSetPatrolPointFromExternal(FVector Point);
+	void OnWaitTimerExpired();
+	void CheckPosition();
+
+private:
+	FVector PatrolPoint;
+	FVector InitialLocation;
+	FTimerHandle WaitTimerHandle;
+	bool bIsWaiting = false;
+
+	FTimerHandle PositionCheckTimerHandle;
+	FVector LastPosition;
 };

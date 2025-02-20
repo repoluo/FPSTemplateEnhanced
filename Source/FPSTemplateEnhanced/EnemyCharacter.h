@@ -23,7 +23,10 @@ protected:
 	// lifespan
 	int32 HitCount = 0;
 
+	// enemy character point，which is used to evaluate the value of the enemy character
 	int32 Point = 60;
+
+	bool bPlayerSeen = false;
 
 public:	
 	// Called every frame
@@ -40,7 +43,9 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	UPawnSensingComponent* PawnSensingComponent;
 
+	void SetbPlayerSeen(bool bSeen) { bPlayerSeen = bSeen; }
 private:
 	void KnockBack(const FVector& KnockBackDirection, float KnockBackStrength);
+	virtual void NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit) override;
 
 };

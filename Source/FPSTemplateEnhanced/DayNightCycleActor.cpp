@@ -31,11 +31,6 @@ void ADayNightCycleActor::Tick(float DeltaTime)
 	{
 		LightSource->AddActorLocalRotation(FRotator(DeltaTime * TurnRate), 0, 0);
 	}
-	// if (Sun)
-	// {
-	// 	FOutputDeviceNull AR;
-	// 	Sun->CallFunctionByNameWithArguments(TEXT("UpdateSunDirection"), AR, NULL, true);
-	// }
 
 }
 
