@@ -78,8 +78,7 @@ void AEnemyAIController::Patrol(float DeltaTime)
 		else
 		{
 			// EnemyCharacter->GetActorLocation()
-			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, FString::Printf(TEXT("PatrolPoint: %s"), *PatrolPoint.ToString()));
-			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, FString::Printf(TEXT("ActorLocation(): %s"), *EnemyCharacter->GetActorLocation().ToString()));
+			
 			EnemyCharacter->GetCharacterMovement()->MaxWalkSpeed = 150.0f; // 设置为所需的速度值
 			MoveToLocation(PatrolPoint, -1.0f, true, true, false, true, 0, true);
 

@@ -6,7 +6,6 @@
 #include "EnemyAIController.h"
 #include "FPSTemplateEnhancedProjectile.h"
 #include "FPSTemplateEnhancedGameMode2.h"
-#include "NavigationSystem.h"
 
 // Sets default values
 AEnemyCharacter::AEnemyCharacter()
@@ -26,7 +25,7 @@ AEnemyCharacter::AEnemyCharacter()
 
 	// Create a pawn sensing component
 	PawnSensingComponent = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensingComponent"));
-	PawnSensingComponent->SetPeripheralVisionAngle(60.0f);
+	PawnSensingComponent->SetPeripheralVisionAngle(110.0f);
 
 	AIControllerClass = AEnemyAIController::StaticClass();
 

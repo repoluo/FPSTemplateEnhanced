@@ -1,38 +1,31 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "DayNightCycleActor.h"
-#include "Engine/DirectionalLight.h"
-#include "Components/DirectionalLightComponent.h"
-#include "Engine/SkyLight.h"
+#include "LightActor.h"
 #include "Components/SkyLightComponent.h"
 
 // Sets default values
-ADayNightCycleActor::ADayNightCycleActor()
+ALightActor::ALightActor()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	
+	// 初始化天光组件
+	SkyLight = CreateDefaultSubobject<USkyLightComponent>(TEXT("SkyLight"));
+	SkyLight->SetupAttachment(RootComponent);
+
 }
 
 // Called when the game starts or when spawned
-void ADayNightCycleActor::BeginPlay()
+void ALightActor::BeginPlay()
 {
 	Super::BeginPlay();
 	
 }
 
 // Called every frame
-void ADayNightCycleActor::Tick(float DeltaTime)
+void ALightActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (LightSource)
-	{
-		LightSource->AddActorLocalRotation(FRotator(DeltaTime * TurnRate, 0, 0), 0, 0);
-	}
-
 }
-
-
 

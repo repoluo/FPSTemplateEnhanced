@@ -40,5 +40,8 @@ private:
 public:
 	UFUNCTION()
 	void AddScore(int32 Score);
+
+	UFUNCTION()
+	void OnExitButtonClicked();
 	
 };

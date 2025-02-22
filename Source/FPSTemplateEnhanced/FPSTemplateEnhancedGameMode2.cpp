@@ -6,6 +6,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/TextBlock.h"
+#include "Components/Button.h"
 
 AFPSTemplateEnhancedGameMode2::AFPSTemplateEnhancedGameMode2()
 	: Super()
@@ -112,6 +113,19 @@ void AFPSTemplateEnhancedGameMode2::EndGame()
 			// 显示鼠标光标
 			PlayerController->bShowMouseCursor = true;
 			PlayerController->SetInputMode(FInputModeUIOnly());
+
+			if (UClass* ButtonWidgetClass = LoadClass<UUserWidget>(nullptr, TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/FirstPerson/Blueprints/WBP_Button.WBP_Button_C'")))
+			{
+				if (UUserWidget* ButtonWidget = CreateWidget<UUserWidget>(PlayerController, ButtonWidgetClass))
+				{
+					ButtonWidget->AddToViewport();
+					UButton* ExitButton = Cast<UButton>(ButtonWidget->GetWidgetFromName(TEXT("Button_Exit")));
+					if (ExitButton)
+					{
+						ExitButton->OnClicked.AddDynamic(this, &AFPSTemplateEnhancedGameMode2::OnExitButtonClicked);
+					}
+				}
+			}
 		}
 	}
 	
@@ -129,4 +143,12 @@ void AFPSTemplateEnhancedGameMode2::EndGame()
 void AFPSTemplateEnhancedGameMode2::AddScore(int32 Score)
 {
 	TotalScore += Score;
+}
+
+void AFPSTemplateEnhancedGameMode2::OnExitButtonClicked()
+{
+	if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
+	{
+		UKismetSystemLibrary::QuitGame(GetWorld(), PlayerController, EQuitPreference::Quit, true);
+	}
 }
