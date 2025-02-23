@@ -3,9 +3,7 @@
 
 #include "DayNightCycleActor.h"
 #include "Engine/DirectionalLight.h"
-#include "Components/DirectionalLightComponent.h"
-#include "Engine/SkyLight.h"
-#include "Components/SkyLightComponent.h"
+
 
 // Sets default values
 ADayNightCycleActor::ADayNightCycleActor()

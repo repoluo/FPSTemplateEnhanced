@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DirectionalLight.h"
-#include "Misc/OutputDeviceNull.h"
 #include "GameFramework/Actor.h"
 #include "DayNightCycleActor.generated.h"
 
@@ -24,16 +23,11 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	UPROPERTY(EditAnywhere, Category = "DayNightCycle") 
-        AActor* Sun;
 	
 	// Directional light for the sun
 	UPROPERTY(EditAnywhere, Category = "DayNightCycle")
-		ADirectionalLight* LightSource;
+	ADirectionalLight* LightSource;
 
 	UPROPERTY(EditAnywhere, Category = "DayNightCycle")
-		float TurnRate;
-	
-
+	float TurnRate;
 };

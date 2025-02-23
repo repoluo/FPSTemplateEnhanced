@@ -79,16 +79,6 @@ void AFPSTemplateEnhancedGameMode2::StartGame()
 
 void AFPSTemplateEnhancedGameMode2::EndGame()
 {
-	// Print scores
-	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
-	{
-		APlayerController* PlayerController = It->Get();
-		if (PlayerController)
-		{
-			// Print player score (implement your own scoring system)
-		}
-	}
-
 	// Print total score
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, FString::Printf(TEXT("Total Score: %d"), TotalScore));
 	
@@ -129,8 +119,6 @@ void AFPSTemplateEnhancedGameMode2::EndGame()
 		}
 	}
 	
-	
-
 	TArray<AActor*> FoundActors;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ACubeActor::StaticClass(), FoundActors);
 	for (AActor* Actor : FoundActors)

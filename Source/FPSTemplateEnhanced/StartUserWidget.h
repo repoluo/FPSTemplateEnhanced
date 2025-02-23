@@ -8,7 +8,7 @@
 #include "Components/EditableTextBox.h"
 #include "StartUserWidget.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLoginSuccess);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnAccountAction);
 
 /**
  * 
@@ -53,6 +53,15 @@ public:
 	bool GetRegisterState() const;
 	
 	UPROPERTY(BlueprintAssignable, Category = "Events")
-	FOnLoginSuccess OnLoginSuccess;
+	FOnAccountAction OnLoginSuccess;
+
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FOnAccountAction OnPasswordIncorrect;
+
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FOnAccountAction OnSignUpSuccess;
+
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FOnAccountAction OnAccountExists;
 	
 };

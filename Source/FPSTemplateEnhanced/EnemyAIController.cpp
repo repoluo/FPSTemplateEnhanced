@@ -77,12 +77,10 @@ void AEnemyAIController::Patrol(float DeltaTime)
 		}
 		else
 		{
-			// EnemyCharacter->GetActorLocation()
-			
 			EnemyCharacter->GetCharacterMovement()->MaxWalkSpeed = 150.0f; // 设置为所需的速度值
 			MoveToLocation(PatrolPoint, -1.0f, true, true, false, true, 0, true);
 
-			// 计算旋转到巡逻点
+			// 计算旋转面向到巡逻点
 			FVector Direction = PatrolPoint - EnemyCharacter->GetActorLocation();
 			Direction.Z = 0;
 			Direction.Normalize();

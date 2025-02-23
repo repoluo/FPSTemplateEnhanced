@@ -23,13 +23,6 @@ private:
 	void StartGame();
 	void EndGame();
 
-	// Number of important target cubes
-	UPROPERTY(EditAnywhere, Category="Gameplay")
-	int32 NumberOfImportantTargets = 2;
-
-	UPROPERTY(EditAnywhere, Category="Gameplay")
-	float GameDuration = 60.0f;
-
 	FTimerHandle TimerHandle_GameTimer;
 
 	int32 TotalScore = 0;
@@ -38,6 +31,13 @@ private:
 	UUserWidget* LevelWidget;
 
 public:
+	// Number of important target cubes
+	UPROPERTY(EditAnywhere, Category="Gameplay")
+	int32 NumberOfImportantTargets = 2;
+
+	UPROPERTY(EditAnywhere, Category="Gameplay")
+	float GameDuration = 60.0f;
+	
 	UFUNCTION()
 	void AddScore(int32 Score);
 

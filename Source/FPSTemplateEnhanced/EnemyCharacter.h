@@ -39,12 +39,13 @@ public:
 
 	UFUNCTION()
     void OnSeePlayer(APawn* Pawn);
-	
-	UPROPERTY(VisibleAnywhere)
-	UPawnSensingComponent* PawnSensingComponent;
 
 	void SetbPlayerSeen(bool bSeen) { bPlayerSeen = bSeen; }
+	
 private:
+	UPROPERTY(VisibleAnywhere)
+	UPawnSensingComponent* PawnSensingComponent;
+	
 	void KnockBack(const FVector& KnockBackDirection, float KnockBackStrength);
 	virtual void NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit) override;
 

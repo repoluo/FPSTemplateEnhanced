@@ -4,7 +4,6 @@
 #include "GameOverUserWidget.h"
 #include "Components/Button.h"
 #include "Kismet/GameplayStatics.h"
-#include "Animation/WidgetAnimation.h"
 
 void UGameOverUserWidget::NativeConstruct()
 {

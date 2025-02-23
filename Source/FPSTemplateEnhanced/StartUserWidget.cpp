@@ -123,6 +123,7 @@ void UStartUserWidget::SignInButtonClicked()
 	// check if the password is correct
 	if (Password != PasswordGottenFromTextBox)
 	{
+		OnPasswordIncorrect.Broadcast();
 		UE_LOG(LogTemp, Warning, TEXT("%s's Password is incorrect!"), *UsernameGottenFromTextBox);
 		return;
 	}
@@ -160,6 +161,7 @@ void UStartUserWidget::SignUpButtonClicked()
 	// check if the account file exists
 	if (CheckAccountFile(Filename))
 	{
+		OnAccountExists.Broadcast();
 		UE_LOG(LogTemp, Warning, TEXT("%s's account already exists!"), *UsernameGottenFromTextBox);
 		return;
 	}
@@ -176,6 +178,7 @@ void UStartUserWidget::SignUpButtonClicked()
 
 	// sign up successfully
 	RegisterState = true;
+	OnSignUpSuccess.Broadcast();
 	GEngine->AddOnScreenDebugMessage(0, 3.0f, FColor::Red, TEXT("Sign up Successfully"), false);
 }
 

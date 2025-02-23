@@ -14,24 +14,26 @@ class FPSTEMPLATEENHANCED_API AEnemyAIController : public AAIController
 {
 	GENERATED_BODY()
 	
-	UPROPERTY(EditDefaultsOnly)
-	UBehaviorTree* EnemyBehaviorTree;
-	
 public:
 	virtual void BeginPlay() override;
+	
 	void ChasePlayer(APawn* PlayerPawn);
+	
 	void SetRandomPatrolPoint();
+	
 	void Patrol(float DeltaTime);
+	
 	void SetSetPatrolPointFromExternal(FVector Point);
+	
 	void OnWaitTimerExpired();
+	
 	void CheckPosition();
 
 private:
-	FVector PatrolPoint;
-	FVector InitialLocation;
-	FTimerHandle WaitTimerHandle;
 	bool bIsWaiting = false;
-
-	FTimerHandle PositionCheckTimerHandle;
+	FVector PatrolPoint;
 	FVector LastPosition;
+	FVector InitialLocation;
+	FTimerHandle WaitTimerHandle; // for patrol
+	FTimerHandle PositionCheckTimerHandle; // for prevent the enemy from being motionless
 };

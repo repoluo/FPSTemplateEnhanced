@@ -22,13 +22,6 @@ private:
 	void StartGame();
 	void EndGame();
 
-	// Number of important target cubes
-	UPROPERTY(EditAnywhere, Category="Gameplay")
-	int32 NumberOfImportantTargets = 3;
-
-	UPROPERTY(EditAnywhere, Category="Gameplay")
-	float GameDuration = 20.0f;
-
 	FTimerHandle TimerHandle_GameTimer;
 	FTimerHandle TimerHandle_DynamicHintTimer;
 
@@ -40,11 +33,27 @@ private:
 	UUserWidget* DynamicHintWidget;
 
 public:
+	// Number of important target cubes
+	UPROPERTY(EditAnywhere, Category="Gameplay")
+	int32 NumberOfImportantTargets = 3;
+
+	UPROPERTY(EditAnywhere, Category="Gameplay")
+	float GameDuration = 20.0f;
+	
 	UFUNCTION()
 	void AddScore(int32 Score);
 
 	UFUNCTION()
 	void OnLoginSuccess();
+
+	UFUNCTION()
+	void OnPasswordIncorrect();
+
+	UFUNCTION()
+	void OnSignUpSuccess();
+
+	UFUNCTION()
+	void OnAccountExists();
 
 	UFUNCTION()
 	void HideDynamicHintWidget();
