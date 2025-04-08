@@ -25,7 +25,7 @@ void UGameOverUserWidget::ButtonClick()
 
 void UGameOverUserWidget::LoadNextLevel()
 {
-	FString LevelName = "D:/bin/UnrealEngine/UnrealProject/FPSTemplateEnhanced/Content/FirstPerson/Maps/FirstPersonMap2.umap";
+	FString LevelName = "/Game/FirstPerson/Maps/FirstPersonMap2.FirstPersonMap2'";
 	UGameplayStatics::OpenLevel(this, FName(LevelName));
 	// FString LevelName = "/Game/FirstPerson/Maps/FirstPersonMap2.umap";
 	// UWorld* World = GetWorld();
