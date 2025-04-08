@@ -25,8 +25,19 @@ void UGameOverUserWidget::ButtonClick()
 
 void UGameOverUserWidget::LoadNextLevel()
 {
-	FString LevelName = "/Game/FirstPerson/Maps/FirstPersonMap2.umap";
+	FString LevelName = "D:/bin/UnrealEngine/UnrealProject/FPSTemplateEnhanced/Content/FirstPerson/Maps/FirstPersonMap2.umap";
 	UGameplayStatics::OpenLevel(this, FName(LevelName));
+	// FString LevelName = "/Game/FirstPerson/Maps/FirstPersonMap2.umap";
+	// UWorld* World = GetWorld();
+	// if (!World) return;
+	//
+	// // 获取当前World关联的FWorldContext
+	// FWorldContext* WorldContext = GEngine->GetWorldContextFromWorld(World);
+	// if (!WorldContext) return;
+	// FString option = "Error";
+	// // 调用LoadMap加载新关卡
+	// FURL URL(nullptr, *LevelName, TRAVEL_Absolute);
+	// World->GetGameInstance()->GetEngine()->LoadMap(*WorldContext, URL, nullptr, option);
 	if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
 	{
 		PlayerController->bShowMouseCursor = false;

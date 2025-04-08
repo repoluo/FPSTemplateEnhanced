@@ -31,7 +31,8 @@ void AEnemyAIController::ChasePlayer(APawn* PlayerPawn)
 	}
 	if (PlayerPawn)
 	{
-		MoveToActor(PlayerPawn, 20.0f);  
+		MoveToActor(PlayerPawn, 20.0f);
+		GetWorld()->GetTimerManager().SetTimer(PositionCheckTimerHandle, this, &AEnemyAIController::CheckPosition, 2.0f, true);
 	}
 }
 
@@ -88,6 +89,9 @@ void AEnemyAIController::Patrol(float DeltaTime)
 			FRotator CurrentRotation = EnemyCharacter->GetActorRotation();
 			FRotator NewRotation = FMath::RInterpTo(CurrentRotation, TargetRotation, DeltaTime, 5.0f); // 根据需要调整插值速度
 			EnemyCharacter->SetActorRotation(NewRotation);
+
+			GetWorld()->GetTimerManager().SetTimer(PositionCheckTimerHandle, this, &AEnemyAIController::CheckPosition, 2.0f, true);
+
 		}
 	}
 }
